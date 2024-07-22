@@ -62,6 +62,5 @@ export class PropertyDto{
   @IsNotEmpty()
   furnishing_status:boolean;
 
-    
 
 }

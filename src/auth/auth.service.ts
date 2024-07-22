@@ -16,7 +16,7 @@ export class AuthService {
   ) {}
 
 
-  async signUp(signUpDto: SignUpDto): Promise<{ message: string }> {
+  async signUp(signUpDto: SignUpDto): Promise<{ token: string }> {
     const { fname, lname, email, password, mobile } = signUpDto;
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -29,10 +29,12 @@ export class AuthService {
       mobile
     });
 
-    return { message: 'User successfully registered' };
+const token = this.jwtService.sign({id:user._id});
+
+    return { token };
   }
 
-  async login(loginDto: LoginDto): Promise<{ message: string }> {
+  async login(loginDto: LoginDto): Promise<{ token: string }> {
     const { email, password } = loginDto;
 
     console.log('Login DTO:', loginDto); 
@@ -52,7 +54,8 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    return { message: 'Login successful' };
+    const token = this.jwtService.sign({id: user._id});
+    return { token};
 }
 
 }
